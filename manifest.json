@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "LinkedIn Easy Apply Filter",
+  "version": "1.0",
+  "description": "LinkedIn iş ilanlarında sadece 'Easy Apply' içeren ilanları gösterir",
+  "permissions": [
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*.linkedin.com/jobs/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ]
+} 
