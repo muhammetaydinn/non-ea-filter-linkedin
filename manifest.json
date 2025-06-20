@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "LinkedIn Easy Apply Filter",
-  "version": "1.0",
-  "description": "LinkedIn iş ilanlarında sadece 'Easy Apply' içeren ilanları gösterir",
+  "version": "1.0.0",
+  "description": "Hide Easy Apply jobs on LinkedIn to see only jobs that require traditional application process",
   "permissions": [
     "activeTab"
   ],
@@ -12,5 +12,12 @@
       "js": ["content.js"],
       "run_at": "document_end"
     }
-  ]
+  ],
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "author": "Your Name",
+  "homepage_url": "https://github.com/yourusername/linkedin-easy-apply-filter"
 } 
