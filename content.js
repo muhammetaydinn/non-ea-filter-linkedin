@@ -71,22 +71,42 @@ function hideEasyApplyJobs() {
   });
 }
 
-// Toggle butonu
-const btn = document.createElement("button");
-btn.textContent = enabled ? "Hide Easy Apply" : "Show Easy Apply";
-btn.style.cssText =
-  "position:fixed;bottom:20px;right:20px;z-index:9999;padding:10px;background:#0a66c2;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold;";
-btn.onclick = () => {
-  enabled = !enabled;
+// Toggle butonu - header içine ekle
+function createToggleButton() {
+  const header = document.querySelector(".jobs-search-results-list__header");
+  if (!header || document.querySelector("#easy-apply-toggle")) return;
+
+  const btn = document.createElement("button");
+  btn.id = "easy-apply-toggle";
   btn.textContent = enabled ? "Hide Easy Apply" : "Show Easy Apply";
-  hideEasyApplyJobs(); // Hemen uygula
-};
-document.body.appendChild(btn);
+  btn.style.cssText = `
+    margin-left: 10px;
+    padding: 6px 12px;
+    background: #0a66c2;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+  `;
+
+  btn.onclick = () => {
+    enabled = !enabled;
+    btn.textContent = enabled ? "Hide Easy Apply" : "Show Easy Apply";
+    hideEasyApplyJobs(); // Hemen uygula
+  };
+
+  // Header'ın sağ tarafına ekle
+  header.appendChild(btn);
+}
 
 const observer = new MutationObserver(() => {
   if (enabled) {
     hideEasyApplyJobs();
   }
+  // Header'ı da kontrol et
+  createToggleButton();
 });
 
 observer.observe(document.body, {
@@ -95,4 +115,7 @@ observer.observe(document.body, {
 });
 
 // Sayfa ilk yüklendiğinde de bir temizle
-hideEasyApplyJobs();
+setTimeout(() => {
+  hideEasyApplyJobs();
+  createToggleButton();
+}, 1000);
