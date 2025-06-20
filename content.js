@@ -53,20 +53,40 @@
   hideCards();
 })();
 
-// LinkedIn Easy Apply Remover - Basit versiyon
+// LinkedIn Easy Apply Hider - Toggle ile
 
-function removeEasyApplyJobs() {
+let enabled = true;
+
+function hideEasyApplyJobs() {
   const jobCards = document.querySelectorAll("[data-occludable-job-id]");
 
   jobCards.forEach((card) => {
     if (card.innerText.includes("Easy Apply")) {
-      card.remove(); // direkt sil gitsin
+      if (enabled) {
+        card.style.display = "none"; // Gizle
+      } else {
+        card.style.display = ""; // Göster
+      }
     }
   });
 }
 
+// Toggle butonu
+const btn = document.createElement("button");
+btn.textContent = enabled ? "Hide Easy Apply" : "Show Easy Apply";
+btn.style.cssText =
+  "position:fixed;bottom:20px;right:20px;z-index:9999;padding:10px;background:#0a66c2;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold;";
+btn.onclick = () => {
+  enabled = !enabled;
+  btn.textContent = enabled ? "Hide Easy Apply" : "Show Easy Apply";
+  hideEasyApplyJobs(); // Hemen uygula
+};
+document.body.appendChild(btn);
+
 const observer = new MutationObserver(() => {
-  removeEasyApplyJobs();
+  if (enabled) {
+    hideEasyApplyJobs();
+  }
 });
 
 observer.observe(document.body, {
@@ -75,4 +95,4 @@ observer.observe(document.body, {
 });
 
 // Sayfa ilk yüklendiğinde de bir temizle
-removeEasyApplyJobs();
+hideEasyApplyJobs();
