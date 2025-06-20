@@ -15,18 +15,6 @@
     });
   }
 
-  // Toggle butonu
-  const btn = document.createElement("button");
-  btn.textContent = enabled ? "Show Cards" : "Hide Cards";
-  btn.style.cssText =
-    "position:fixed;bottom:20px;right:20px;z-index:9999;padding:10px;background:#0a66c2;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold;";
-  btn.onclick = () => {
-    enabled = !enabled;
-    btn.textContent = enabled ? "Show Cards" : "Hide Cards";
-    hideCards();
-  };
-  document.body.appendChild(btn);
-
   // Observer - yeni kartlar geldiğinde gizle
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
@@ -82,7 +70,7 @@ function createToggleButton() {
   btn.style.cssText = `
     margin-left: 10px;
     padding: 6px 12px;
-    background: #0a66c2;
+    background:rgb(0, 255, 13);
     color: white;
     border: none;
     border-radius: 6px;
