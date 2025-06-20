@@ -7,6 +7,7 @@
 ## What This Extension Does
 
 This extension:
+
 - Runs only on LinkedIn job search pages
 - Modifies the display of job cards locally in your browser
 - Hides Easy Apply jobs to show only traditional application jobs
@@ -33,4 +34,4 @@ If you have any questions about this privacy policy, please contact us through t
 
 ## Last Updated
 
-This privacy policy was last updated on [Current Date]. 
+This privacy policy was last updated on [Current Date].
