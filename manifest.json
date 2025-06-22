@@ -3,9 +3,6 @@
   "name": "LinkedIn Easy Apply Filter",
   "version": "1.0.0",
   "description": "Hide Easy Apply jobs on LinkedIn to see only jobs that require traditional application process",
-  "permissions": [
-    "activeTab"
-  ],
   "content_scripts": [
     {
       "matches": ["*://*.linkedin.com/jobs/*"],

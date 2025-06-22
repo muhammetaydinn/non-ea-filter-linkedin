@@ -41,60 +41,149 @@
   hideCards();
 })();
 
-// LinkedIn Easy Apply Hider - Toggle ile
+// LinkedIn Job Filter - Easy Apply & Applied Jobs
 
-let enabled = true;
+let hideEasyApply = true;
+let hideApplied = true;
 
-function hideEasyApplyJobs() {
+function filterJobs() {
   const jobCards = document.querySelectorAll("[data-occludable-job-id]");
 
   jobCards.forEach((card) => {
-    if (card.innerText.includes("Easy Apply")) {
-      if (enabled) {
-        card.style.display = "none"; // Gizle
-      } else {
-        card.style.display = ""; // Göster
-      }
+    const cardText = card.innerText;
+    const hasEasyApply = cardText.includes("Easy Apply");
+    const hasApplied =
+      cardText.includes("Applied") || cardText.includes("Başvuruldu");
+
+    let shouldHide = false;
+
+    if (hideEasyApply && hasEasyApply) {
+      shouldHide = true;
+    }
+
+    if (hideApplied && hasApplied) {
+      shouldHide = true;
+    }
+
+    if (shouldHide) {
+      card.style.display = "none";
+    } else {
+      card.style.display = "";
     }
   });
 }
 
-// Toggle butonu - header içine ekle
-function createToggleButton() {
+// Checkbox container - header içine ekle
+function createFilterContainer() {
   const header = document.querySelector(".jobs-search-results-list__header");
-  if (!header || document.querySelector("#easy-apply-toggle")) return;
+  if (!header || document.querySelector("#job-filter-container")) return;
 
-  const btn = document.createElement("button");
-  btn.id = "easy-apply-toggle";
-  btn.textContent = enabled ? "Hide Easy Apply" : "Show Easy Apply";
-  btn.style.cssText = `
+  const container = document.createElement("div");
+  container.id = "job-filter-container";
+  container.style.cssText = `
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     margin-left: 10px;
-    padding: 6px 12px;
-    background:rgb(0, 255, 13);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 500;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
   `;
 
-  btn.onclick = () => {
-    enabled = !enabled;
-    btn.textContent = enabled ? "Hide Easy Apply" : "Show Easy Apply";
-    hideEasyApplyJobs(); // Hemen uygula
+  // Container başlığı
+  const title = document.createElement("div");
+  title.textContent = "Job Filters";
+  title.style.cssText = `
+    font-weight: bold;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+  `;
+
+  // Easy Apply Checkbox
+  const easyApplyContainer = document.createElement("div");
+  easyApplyContainer.style.cssText = `
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  `;
+
+  const easyApplyCheckbox = document.createElement("input");
+  easyApplyCheckbox.type = "checkbox";
+  easyApplyCheckbox.id = "easy-apply-checkbox";
+  easyApplyCheckbox.checked = hideEasyApply;
+  easyApplyCheckbox.style.cssText = `
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  `;
+
+  const easyApplyLabel = document.createElement("label");
+  easyApplyLabel.htmlFor = "easy-apply-checkbox";
+  easyApplyLabel.textContent = "Hide Easy Apply Jobs";
+  easyApplyLabel.style.cssText = `
+    font-size: 12px;
+    color: #333;
+    cursor: pointer;
+  `;
+
+  easyApplyCheckbox.onchange = () => {
+    hideEasyApply = easyApplyCheckbox.checked;
+    filterJobs();
   };
 
-  // Header'ın sağ tarafına ekle
-  header.appendChild(btn);
+  easyApplyContainer.appendChild(easyApplyCheckbox);
+  easyApplyContainer.appendChild(easyApplyLabel);
+
+  // Applied Jobs Checkbox
+  const appliedContainer = document.createElement("div");
+  appliedContainer.style.cssText = `
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  `;
+
+  const appliedCheckbox = document.createElement("input");
+  appliedCheckbox.type = "checkbox";
+  appliedCheckbox.id = "applied-checkbox";
+  appliedCheckbox.checked = hideApplied;
+  appliedCheckbox.style.cssText = `
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  `;
+
+  const appliedLabel = document.createElement("label");
+  appliedLabel.htmlFor = "applied-checkbox";
+  appliedLabel.textContent = "Hide Applied Jobs";
+  appliedLabel.style.cssText = `
+    font-size: 12px;
+    color: #333;
+    cursor: pointer;
+  `;
+
+  appliedCheckbox.onchange = () => {
+    hideApplied = appliedCheckbox.checked;
+    filterJobs();
+  };
+
+  appliedContainer.appendChild(appliedCheckbox);
+  appliedContainer.appendChild(appliedLabel);
+
+  // Container'a ekle
+  container.appendChild(title);
+  container.appendChild(easyApplyContainer);
+  container.appendChild(appliedContainer);
+  header.appendChild(container);
 }
 
 const observer = new MutationObserver(() => {
-  if (enabled) {
-    hideEasyApplyJobs();
+  if (hideEasyApply || hideApplied) {
+    filterJobs();
   }
   // Header'ı da kontrol et
-  createToggleButton();
+  createFilterContainer();
 });
 
 observer.observe(document.body, {
@@ -104,6 +193,6 @@ observer.observe(document.body, {
 
 // Sayfa ilk yüklendiğinde de bir temizle
 setTimeout(() => {
-  hideEasyApplyJobs();
-  createToggleButton();
+  filterJobs();
+  createFilterContainer();
 }, 1000);
